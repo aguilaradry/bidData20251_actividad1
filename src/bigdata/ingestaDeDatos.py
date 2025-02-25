@@ -2,7 +2,12 @@ import requests
 import sqlite3
 import pandas as pd
 import os
+import sys
 from datetime import datetime
+
+# Fuerza la codificación UTF-8 en Windows
+if os.name == "nt":
+    sys.stdout.reconfigure(encoding="utf-8")
 
 # 📌 Ruta de almacenamiento
 DB_PATH = 'static/ingestion.db'
