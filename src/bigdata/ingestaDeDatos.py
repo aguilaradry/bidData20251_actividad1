@@ -9,14 +9,10 @@ from datetime import datetime
 if os.name == "nt":
     sys.stdout.reconfigure(encoding="utf-8")
 
-# 📌 Ruta de almacenamiento
-DB_PATH = 'static/ingestion.db'
-EXCEL_PATH = "static/muestra_datos.xlsx"
-AUDIT_PATH = "static/auditoria.txt"
-
-# 🔹 Eliminar la base de datos si ya existe (evita errores en pruebas)
-if os.path.exists(DB_PATH):
-    os.remove(DB_PATH)
+#  Ruta de almacenamiento
+DB_PATH = 'src/bigdata/static/ingestion.db'
+EXCEL_PATH = "src/bigdata/static/muestra_datos.xlsx"
+AUDIT_PATH = "src/bigdata/static/auditoria.txt"
 
 # 🔹 Función para obtener los datos del API
 def obtener_datos_api(url="", params={}):
@@ -27,7 +23,7 @@ def obtener_datos_api(url="", params={}):
         response.raise_for_status()
         return response.json()  # Retorna los datos en formato JSON
     except requests.exceptions.RequestException as error:
-        print(f"❌ Error al obtener datos del API: {error}")
+        print(f"Error al obtener datos del API: {error}")
         return {}
 
 # 🔹 Función para crear la base de datos y la tabla en SQLite
@@ -61,7 +57,7 @@ def insertar_datos(datos):
 
     conn.commit()
     conn.close()
-    print("✅ Datos insertados en la base de datos.")
+    print(" Datos insertados en la base de datos.")
 
 # 🔹 Función para generar un archivo Excel con los datos almacenados
 def generar_excel():
@@ -71,7 +67,7 @@ def generar_excel():
     conn.close()
 
     df.to_excel(EXCEL_PATH, index=False, sheet_name="Muestra de Datos")
-    print(f"✅ Archivo Excel generado: {EXCEL_PATH}")
+    print(f" Archivo Excel generado: {EXCEL_PATH}")
 
 # 🔹 Función para generar el archivo de auditoría
 def generar_auditoria(datos_api):
@@ -85,23 +81,23 @@ def generar_auditoria(datos_api):
     registros_api = len(datos_api.get("ticker", {}))  # Cantidad de claves en "ticker"
 
     with open(AUDIT_PATH, "w", encoding="utf-8") as f:
-        f.write(f"📅 Auditoría de Ingesta - {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+        f.write(f" Auditoría de Ingesta - {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
         f.write("=" * 50 + "\n")
         f.write(f"🔹 Registros obtenidos del API: {registros_api}\n")
         f.write(f"🔹 Registros almacenados en BD: {registros_db}\n\n")
 
         # Comparación de datos
         if registros_api != registros_db:
-            f.write("⚠️ Advertencia: Diferencias en el número de registros entre API y BD.\n")
+            f.write(" Advertencia: Diferencias en el número de registros entre API y BD.\n")
         else:
-            f.write("✅ No hay diferencias entre el API y la base de datos.")
+            f.write(" No hay diferencias entre el API y la base de datos.")
 
-    print(f"✅ Archivo de auditoría generado: {AUDIT_PATH}")
+    print(f" Archivo de auditoría generado: {AUDIT_PATH}")
 
 # 🔹 Función principal
 def main():
     """Ejecuta todo el proceso de ingesta de datos."""
-    print("🚀 Iniciando proceso de ingesta de datos...")
+    print(" Iniciando proceso de ingesta de datos...")
 
     url = "https://www.mercadobitcoin.net/api"
     parametros = {"coin": "BTC", "method": "ticker"}
@@ -113,9 +109,9 @@ def main():
         insertar_datos(datos_api)
         generar_excel()
         generar_auditoria(datos_api)
-        print("✅ Proceso completado con éxito.")
+        print(" Proceso completado con éxito.")
     else:
-        print("❌ No se obtuvieron datos del API.")
+        print(" No se obtuvieron datos del API.")
 
 if __name__ == "__main__":
     main()
