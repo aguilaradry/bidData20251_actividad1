@@ -29,9 +29,9 @@ jobs:
         run: pip install -e .
       - name: paso5 - Asegurar que la carpeta static existe
         run: |
-          if (!(Test-Path "src/bigdata/static")) {
-            New-Item -ItemType Directory -Path "src/bigdata/static"
-          }
+            if (!(Test-Path "src/bigdata/static")) {
+              New-Item -ItemType Directory -Path "src/bigdata/static"
+            }
       - name: paso6 - Ejecutar script
         run:  python src/bigdata/ingestaDeDatos.py
 
