@@ -1,0 +1,6 @@
+ Auditoría de Ingesta - 2025-02-25 03:27:42
+==================================================
+🔹 Registros obtenidos del API: 9
+🔹 Registros almacenados en BD: 9
+
+ No hay diferencias entre el API y la base de datos.
